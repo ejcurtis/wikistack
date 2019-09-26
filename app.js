@@ -1,12 +1,15 @@
 const express = require("express");
 const morgan = require("morgan");
 const { db } = require('./models');
+// const { db, User, Page } = require('./models');
 const app = express();
-const models = require('./models/index');
+const wikiRouter = require('./routes/wiki');
+const userRouter = require('./routes/user');
 
 app.use(morgan("dev"));
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({extended: false}));
+ app.use('/wiki', require('./routes/wiki'))
 
 app.get("/", (req, res, next) => {
   try {
@@ -19,19 +22,22 @@ db.authenticate().
   then(() => {
     console.log('connected to the database');
   })
+const PORT = 3000;
 
-const init = async() => {
- try{await models.User.sync();
- await models.Page.sync();
+const init = async () => {
+ try {
+//   await User.sync();
+//  await Page.sync();
+await db.sync()
  app.listen(PORT, ()=>{
    console.log(`Server is listening on port ${PORT}!`)
  })}
- catch(error){
-   console.error("Wrong!")
+ catch (error) {
+   console.error('WRONG')
  }
 }
+
 init();
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`listening at ${PORT}`)
-})
+
+db.sync({ force: true })
+
