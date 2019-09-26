@@ -11,7 +11,7 @@ title: {
   }, 
 slug: {type: Sequelize.STRING,
     allowNull: false,
-    validate: {isUrl: true}
+    // validate: {isUrl: true}
   },
 content: {
     type: Sequelize.TEXT,
